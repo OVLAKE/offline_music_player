@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import '../services/player_service.dart';
+import '../widgets/playback_controls.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -40,6 +41,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
+      bottomNavigationBar: const PlaybackControls(),
       body: Column(
         children: [
           Expanded(
@@ -52,19 +54,26 @@ class HomePage extends StatelessWidget {
                       final isSelected = service.currentIndex == index;
 
                       return ListTile(
-                        leading: Icon(
-                          isSelected && service.isPlaying 
-                              ? Icons.graphic_eq 
-                              : Icons.music_note,
-                          color: isSelected ? Colors.tealAccent : null,
-                        ),
-                        title: Text(
-                          track.title, 
-                          maxLines: 1, 
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () => service.playTrack(index),
-                      );
+                tileColor: isSelected ? Colors.white.withOpacity(0.05) : null,
+                leading: Icon(
+                  isSelected && service.isPlaying 
+                      ? Icons.graphic_eq 
+                      : Icons.music_note,
+                  color: isSelected ? Colors.tealAccent : null,
+                ),
+                title: Text(
+                  track.path.split('\\').last.split('/').last.replaceAll('.mp3', ''),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: isSelected ? Colors.tealAccent : null,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+                onTap: () {
+                                    service.player.jump(index);
+                },
+              );
                     },
                   ),
           ),

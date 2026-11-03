@@ -13,6 +13,8 @@ class PlayerService extends ChangeNotifier {
   List<LocalTrack> playlist = [];
   int currentIndex = -1;
 
+  Player get player => _player;
+
   PlayerService() {
     _player = Player();
     // Listen to native audio events and update the UI automatically
